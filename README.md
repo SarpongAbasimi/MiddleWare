@@ -1,0 +1,2 @@
+- Experimenting with http4s middleware and logs
+- Middleware and logs

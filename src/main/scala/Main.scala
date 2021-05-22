@@ -1,5 +1,5 @@
 import cats.data.Kleisli
-import org.http4s.{HttpRoutes, Request, Response, Status}
+import org.http4s.{Header, HttpRoutes, Request, Response, Status}
 import org.http4s.dsl.io._
 import cats.effect.{ExitCode, IO, IOApp, Sync}
 import org.http4s.dsl.impl.Root
@@ -17,7 +17,9 @@ object Main extends IOApp {
 
   def middlewareService(service: Kleisli[IO, Request[IO], Response[IO]])(implicit sync: Sync[IO]) = Kleisli { (req: Request[IO]) =>
     service(req).map{
-      case Status.Successful(res) => res
+      case Status.Successful(res) => {
+        res.putHeaders(Header("company", "47Deg"))
+      }
       case res => res
     }
   }
